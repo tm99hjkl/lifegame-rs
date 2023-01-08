@@ -16,19 +16,27 @@ fn run() {
     let mut board: Vec<Pos> = vec![(0, 1), (1, 2), (2, 0), (2, 1), (2, 2)];
 
     hide_cursor();
+    clear_screen();
+
+    print_board(&board, &board);
     for _ in 0..MAX_GEN {
-        print_board(&board);
+        print_board(&board, &next_gen(&board));
         board = next_gen(&board);
         thread::sleep(Duration::from_millis(MILLI_SEC_PER_1_GEN));
     }
 }
 
-fn print_board(board: &Vec<Pos>) {
-    clear_screen();
+fn print_board(prev_board: &Vec<Pos>, board: &Vec<Pos>) {
     for (row, col) in board {
         cursor_position((*row, *col));
         print_cell();
-        println!("\n");
+        println!();
+    }
+
+    for (row, col) in subs(prev_board, board) {
+        cursor_position((row, col));
+        print_dead_cell();
+        println!();
     }
 }
 
@@ -47,6 +55,10 @@ fn cursor_position((row, col): Pos) {
 
 fn print_cell() {
     print!("\x1b[46m  \x1b[0m");
+}
+
+fn print_dead_cell() {
+    print!("  ");
 }
 
 fn is_dead((row, col): Pos, board: &Vec<Pos>) -> bool {
@@ -108,4 +120,16 @@ fn live_cell_count((row, col): Pos, board: &Vec<Pos>) -> u8 {
         .cloned()
         .filter(|&p| is_alive(p, board))
         .count() as u8
+}
+
+fn subs(v1: &Vec<Pos>, v2: &Vec<Pos>) -> Vec<Pos> {
+    let mut res: Vec<Pos> = vec![];
+
+    for e1 in v1 {
+        if !v2.contains(e1) {
+            res.push(*e1);
+        }
+    }
+
+    res
 }
