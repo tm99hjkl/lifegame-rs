@@ -15,6 +15,7 @@ fn run() {
     // glider
     let mut board: Vec<Pos> = vec![(0, 1), (1, 2), (2, 0), (2, 1), (2, 2)];
 
+    hide_cursor();
     for _ in 0..MAX_GEN {
         print_board(&board);
         board = next_gen(&board);
@@ -33,6 +34,10 @@ fn print_board(board: &Vec<Pos>) {
 
 fn clear_screen() {
     print!("\x1b[2J");
+}
+
+fn hide_cursor() {
+    print!("\x1b[?25l");
 }
 
 fn cursor_position((row, col): Pos) {
