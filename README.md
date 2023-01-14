@@ -1,7 +1,7 @@
 ## lifegame-rs
-lifegame implemented by Rust.
+lifegame implementation in Rust
 
-## Usage
+## usage
 ```
 $ git clone https://github.com/tm99hjkl/lifegame-rs
 $ cargo run
