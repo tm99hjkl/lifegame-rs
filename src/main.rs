@@ -17,6 +17,7 @@ fn run() {
 
     hide_cursor();
     clear_screen();
+    write_frame();
 
     print_board(&board, &board);
     for _ in 0..MAX_GEN {
@@ -28,13 +29,13 @@ fn run() {
 
 fn print_board(prev_board: &Vec<Pos>, board: &Vec<Pos>) {
     for (row, col) in board {
-        cursor_position((*row, *col));
+        cursor_position((*row + 1, *col + 1));
         print_cell();
         println!();
     }
 
     for (row, col) in subs(prev_board, board) {
-        cursor_position((row, col));
+        cursor_position((row + 1, col + 1));
         print_dead_cell();
         println!();
     }
@@ -132,4 +133,37 @@ fn subs(v1: &Vec<Pos>, v2: &Vec<Pos>) -> Vec<Pos> {
     }
 
     res
+}
+
+fn write_frame() {
+    cursor_position((0, 0));
+    let upper_left_corner: char = '┌';
+    let upper_right_corner: char = '┐';
+    let horizon: char = '─';
+    let vertical: char = '│';
+    let lower_left_corner: char = '└';
+    let lower_right_corner: char = '┘';
+
+    print!("{upper_left_corner}");
+    for _ in 0..TERM_WIN_SIZE * 2 {
+        print!("{horizon}");
+    }
+    print!("{upper_right_corner}");
+    println!();
+
+    for _ in 0..TERM_WIN_SIZE - 1 {
+        print!("{vertical}");
+        for _ in 0..TERM_WIN_SIZE * 2 {
+            print!(" ");
+        }
+        print!("{vertical}");
+        println!();
+    }
+
+    print!("{lower_left_corner}");
+    for _ in 0..TERM_WIN_SIZE * 2 {
+        print!("{horizon}");
+    }
+    print!("{lower_right_corner}");
+    println!();
 }
