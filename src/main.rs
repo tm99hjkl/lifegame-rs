@@ -1,7 +1,7 @@
 use std::thread;
 use std::time::Duration;
 
-static TERM_WIN_SIZE: i32 = 20; /* width = height */
+static TERM_WIN_SIZE: i32 = 20; /* width == height */
 static MILLI_SEC_PER_1_GEN: u64 = 100;
 static MAX_GEN: u16 = 1000;
 
